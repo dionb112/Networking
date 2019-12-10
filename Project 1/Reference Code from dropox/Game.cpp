@@ -10,12 +10,19 @@ Game::Game() :
 {
 	m_player = new Dot(false);
 	m_otherPlayer = new Dot(true);
+	m_client = new Client("149.153.106.153", 1111, m_player); //Create client to connect to server 127.0.0.1 [localhost] on port 1111
 }
 Game::~Game()
 {
 }
 bool Game::Initialize(const char* title, int xpos, int ypos, int width, int height, int flags)
 {
+	if (!m_client->Connect()) //If client fails to connect...
+	{
+		std::cout << "Failed to connect to server..." << std::endl;
+		system("pause");
+		return -1;
+	}
 	if(SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
 		DEBUG_MSG("SDL Init success");
@@ -85,6 +92,7 @@ void Game::Render()
 }
 void Game::Update()
 {
+	//m_client->SendString("coords");
 	m_ticks = SDL_GetTicks();
 	m_sprite = (m_ticks / 100) % 3;
 	m_player->move(600, 800);
@@ -120,6 +128,11 @@ void Game::HandleEvents()
 	SDL_Event event;
 	SDL_PollEvent(&event);
 	m_player->handleEvent(event);
+	switch (event.type)
+	{
+	case SDL_KEYDOWN:
+		m_client->SendString(m_player->GetPosAsString());
+	}
 }
 
 bool Game::IsRunning()

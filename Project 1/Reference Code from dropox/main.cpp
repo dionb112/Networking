@@ -4,16 +4,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "Game.h"
-#include "Client.h"
 
 int main(int argc, char** argv) {
-	Client myClient("149.153.106.153", 1111); //Create client to connect to server 127.0.0.1 [localhost] on port 1111
-	if (!myClient.Connect()) //If client fails to connect...
-	{
-		std::cout << "Failed to connect to server..." << std::endl;
-		system("pause");
-		return -1;
-	}
 	DEBUG_MSG("Game Object Created");
 	Game* game = new Game();
 	//Adjust screen positions as needed
@@ -31,7 +23,6 @@ int main(int argc, char** argv) {
 		game->HandleEvents();
 		game->Update();
 		game->Render();
-
 		// std::getline(std::cin, userinput); //Get line if user presses enter and fill the buffer
 	}
 

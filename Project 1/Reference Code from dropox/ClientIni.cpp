@@ -3,8 +3,9 @@
 #pragma comment(lib,"ws2_32.lib") //Required for WinSock
 #include <iostream> //for std::cout
 
-Client::Client(const char * ip, const int port)
+Client::Client(const char * ip, const int port, Dot* t_player)
 {
+	m_player = t_player;
 	//Winsock Startup
 	WSAData wsaData;
 	WORD DllVersion = MAKEWORD(2, 1);

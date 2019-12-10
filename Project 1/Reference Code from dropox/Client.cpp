@@ -12,7 +12,14 @@ bool Client::ProcessPacketType(PacketType packetType)
 		std::string Message; //string to store our message we received
 		if (!GetString(Message)) //Get the chat message and store it in variable: Message
 			return false; //If we do not properly get the chat message, return false
-		std::cout << Message << std::endl; //Display the message to the user
+		if (Message == "coords")
+		{
+			SendString(m_player->GetPosAsString()); // send my coords upon request
+		}
+		else
+		{
+			std::cout << Message << std::endl;
+		}
 		break;
 	}
 	case PacketType::FileTransferByteBuffer:

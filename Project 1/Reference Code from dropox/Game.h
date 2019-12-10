@@ -3,6 +3,8 @@
 #include "Debug.h"
 #include "Dot.h"
 #include <SDL.h>
+#include "Client.h"
+
 static const int SPRITE_SIZE = 32;
 class Game
 {
@@ -18,6 +20,7 @@ public:
 	bool IsRunning();
 	void CleanUp();
 private:
+	Client* m_client;
 	Dot* m_player;
 	Dot* m_otherPlayer;
 

@@ -3,11 +3,12 @@
 #include <string> //For std::string
 #include "FileTransferData.h" //For FileTransferData class
 #include "PacketManager.h" //For PacketManager class
+#include "Dot.h"
 
 class Client
 {
 public: //Public functions
-	Client(const char * ip, const int port);
+	Client(const char * ip, const int port, Dot* t_player);
 	bool Connect();
 	void Disconnect();
 	void SendString(const std::string & str);
@@ -25,7 +26,11 @@ private: //Private functions
 	bool Getint32_t(std::int32_t & int32_t);
 	bool GetPacketType(PacketType & packetType);
 	bool GetString(std::string & str);
+	std::string GetMessage() { return m_message.second; }
+
 private: //Private variables
+	Dot* m_player;
+	std::pair<std::string, std::string> m_message;
 	bool m_terminateThreads = false;
 	bool m_isConnected = false;
 	FileTransferData m_file; //Object that contains information about our file that is being received from the server.
