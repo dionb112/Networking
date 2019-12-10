@@ -8,7 +8,7 @@ This is the solution for the client that you should have at the end of tutorial 
 
 int main()
 {
-	Client myClient("149.153.106.154",1111); //Create client to my server ("127.0.0.1") on port 1111
+	Client myClient("149.153.106.159",1111); //Create client to my server  on port 1111
 
 	if (!myClient.Connect()) //If client fails to connect...
 	{
