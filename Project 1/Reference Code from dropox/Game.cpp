@@ -8,8 +8,8 @@ Game::Game() :
 	m_spriteX{ 32 },
 	m_pressed{ 4 }
 {
-	m_player = new Dot(true);
-	m_otherPlayer = new Dot(false);
+	m_player = new Dot(false);
+	m_otherPlayer = new Dot(true);
 }
 Game::~Game()
 {
@@ -87,7 +87,7 @@ void Game::Update()
 {
 	m_ticks = SDL_GetTicks();
 	m_sprite = (m_ticks / 100) % 3;
-
+	m_player->move(600, 800);
 	m_srcrect = { m_sprite * m_spriteX, m_spriteY, SPRITE_SIZE, SPRITE_SIZE };
 	m_dstrect = { SPRITE_SIZE, SPRITE_SIZE, SPRITE_SIZE, SPRITE_SIZE };
 	switch (m_pressed)
@@ -118,42 +118,8 @@ void Game::Update()
 void Game::HandleEvents()
 {
 	SDL_Event event;
-	while (SDL_PollEvent(&event))
-	{
-		switch (event.type)
-		{
-		case SDL_KEYDOWN:
-			switch (event.key.keysym.sym)
-			{
-			case SDLK_ESCAPE:
-				m_running = false;
-				break;
-			case SDLK_UP:
-				SDL_SetRenderDrawColor(m_p_Renderer, 255, 0, 0, 255);
-				m_pressed = 2; // jump
-				break;
-			case SDLK_DOWN:
-				SDL_SetRenderDrawColor(m_p_Renderer, 0, 255, 0, 255);
-				m_pressed = 3; // falling
-				break;
-			case SDLK_LEFT:
-				SDL_SetRenderDrawColor(m_p_Renderer, 0, 0, 255, 255);
-				m_pressed = 0; // walking
-				break;
-			case SDLK_RIGHT:
-				SDL_SetRenderDrawColor(m_p_Renderer, 255, 255, 255, 255);
-				m_pressed = 1; // climbing
-				break;
-			case SDLK_SPACE:
-				SDL_SetRenderDrawColor(m_p_Renderer, 0, 255, 255, 255);
-				m_pressed = 4; // idle
-				break;
-			default:
-				SDL_SetRenderDrawColor(m_p_Renderer, 0, 0, 0, 255);
-				break;
-			}
-		}
-	}
+	SDL_PollEvent(&event);
+	m_player->handleEvent(event);
 }
 
 bool Game::IsRunning()

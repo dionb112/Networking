@@ -10,19 +10,15 @@ Dot::Dot(bool chaser)
 
 	if (isChaser)
 	{
-		gDotTexture.setColor(244, 66, 66);
-		mPosX = 0;
-		mPosY = 0;
+		SetPosition(0, 0);
 	}
 	else
 	{
-		mPosX = 100;
-		mPosY = 100;
-		gDotTexture.setColor(66, 69, 244);
+		SetPosition(600, 400);
 	}
 
-	width = 10;
-	height = 10;
+	width = 176;
+	height = 175;
 }
 
 Dot::~Dot()
