@@ -14,7 +14,10 @@ public: //Public functions
 	void SendString(const std::string & str);
 	bool RequestFile(const std::string & fileName);
 	~Client();
+	std::string getOtherPos() { return m_otherPos; }
+
 private: //Private functions
+	std::string m_otherPos;
 	bool CloseConnection();
 	bool ProcessPacketType(const PacketType packetType);
 	static void ClientThread(Client & client); //Client thread which reads messages from server

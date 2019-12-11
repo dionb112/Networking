@@ -139,6 +139,7 @@
     <ClCompile Include="PacketManager.cpp" />
     <ClCompile Include="PacketStructs.cpp" />
     <ClCompile Include="SendGetMethods.cpp" />
+    <ClCompile Include="NumFromString.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h" />

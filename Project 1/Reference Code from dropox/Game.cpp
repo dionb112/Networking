@@ -3,10 +3,7 @@
 #include <thread>
 using namespace std;
 Game::Game() : 
-	m_running(false),
-	m_spriteY{ 0 },
-	m_spriteX{ 32 },
-	m_pressed{ 4 }
+	m_running(false)
 {
 	m_player = new Dot(false);
 	m_otherPlayer = new Dot(true);
@@ -60,77 +57,33 @@ bool Game::Initialize(const char* title, int xpos, int ypos, int width, int heig
 
 	return true;
 }
-void Game::LoadContent()
-{
-	DEBUG_MSG("Loading Content");
-	m_p_Surface = SDL_LoadBMP("assets/sprite.bmp");
-	m_p_Texture = SDL_CreateTextureFromSurface(m_p_Renderer, m_p_Surface);
-	SDL_FreeSurface(m_p_Surface);
-
-	if(SDL_QueryTexture(m_p_Texture, NULL, NULL, &m_Source.w, &m_Destination.h)==0)
-	{
-		m_Destination.x = m_Source.x = 0;
-		m_Destination.y = m_Source.y = 0;
-		m_Destination.w = m_Source.w;
-		m_Destination.h = m_Source.h;
-	}
-	else
-	{
-		DEBUG_MSG("Texture Query Failed");
-		m_running = false;
-	}
-}
 void Game::Render()
 {
 	SDL_RenderClear(m_p_Renderer);
-
-	if(m_p_Renderer != nullptr && m_p_Texture != nullptr)
-		SDL_RenderCopy(m_p_Renderer, m_p_Texture, &m_srcrect, &m_dstrect);
 	m_player->render(m_p_Renderer);
 	m_otherPlayer->render(m_p_Renderer);
 	SDL_RenderPresent(m_p_Renderer);
 }
 void Game::Update()
 {
-	//m_client->SendString("coords");
+	int x = numFromString(m_client->getOtherPos()).at(0);
+	int y = numFromString(m_client->getOtherPos()).at(1);
+
 	m_ticks = SDL_GetTicks();
-	m_sprite = (m_ticks / 100) % 3;
 	m_player->move(600, 800);
-	m_srcrect = { m_sprite * m_spriteX, m_spriteY, SPRITE_SIZE, SPRITE_SIZE };
-	m_dstrect = { SPRITE_SIZE, SPRITE_SIZE, SPRITE_SIZE, SPRITE_SIZE };
-	switch (m_pressed)
-	{
-	case 0:
-		m_spriteY = SPRITE_SIZE;
-		m_spriteX = SPRITE_SIZE;
-		break;
-	case 1:
-		m_spriteY = SPRITE_SIZE * 2;
-		m_spriteX = SPRITE_SIZE;
-		break;
-	case 2:
-		m_spriteY = SPRITE_SIZE * 3;
-		m_spriteX = SPRITE_SIZE;
-		break;
-	case 3:
-		m_spriteY = 0;
-		m_spriteX = SPRITE_SIZE;
-		break;
-	case 4:
-		m_spriteX = 0;
-		break;
-	default:
-		break;
-	}
+	m_otherPlayer->SetPosition(x, y);
 }
 void Game::HandleEvents()
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);
 	m_player->handleEvent(event);
-	switch (event.type)
+	if (event.type == SDL_KEYDOWN)
 	{
-	case SDL_KEYDOWN:
+		if (event.key.keysym.sym == SDLK_ESCAPE)
+		{
+			m_running = false;
+		}
 		m_client->SendString(m_player->GetPosAsString());
 	}
 }
@@ -138,13 +91,6 @@ void Game::HandleEvents()
 bool Game::IsRunning()
 {
 	return m_running;
-}
-
-void Game::UnloadContent()
-{
-	DEBUG_MSG("Unloading Content");
-	// delete(m_p_Texture);
-	// m_p_Texture = NULL;
 }
 
 void Game::CleanUp()
