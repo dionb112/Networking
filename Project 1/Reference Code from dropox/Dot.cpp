@@ -3,22 +3,11 @@
 Dot::Dot(bool chaser)
 {
 	isChaser = chaser;
-
-	//Initialize the velocity
-	mVelX = 0;
-	mVelY = 0;
-
-	if (isChaser)
-	{
-		SetPosition(0, 0);
-	}
-	else
-	{
-		SetPosition(600, 400);
-	}
-
 	width = 176;
 	height = 175;
+	//Initialize the velocity
+	mVelX = 0;
+	mVelY = 0; 
 }
 
 Dot::~Dot()
@@ -51,62 +40,43 @@ void Dot::Init(SDL_Renderer *gRenderer)
 			printf("Failed to load dot texture!\n");
 		}
 	}
+
+
+	if (isChaser)
+	{
+		SetPosition(0, 0);
+	}
+	else
+	{
+		SetPosition(600, 400);
+	}
+
 }
 
 void Dot::handleEvent(SDL_Event& e)
 {
-	if (isChaser)
+	//If a key was pressed
+	if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
 	{
-		//If a key was pressed
-		if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+		//Adjust the velocity
+		switch (e.key.keysym.sym)
 		{
-			//Adjust the velocity
-			switch (e.key.keysym.sym)
-			{
-			case SDLK_w: mVelY -= DOT_VEL; break;
-			case SDLK_s: mVelY += DOT_VEL; break;
-			case SDLK_a: mVelX -= DOT_VEL; break;
-			case SDLK_d: mVelX += DOT_VEL; break;
-			}
-		}
-		//If a key was released
-		else if (e.type == SDL_KEYUP && e.key.repeat == 0)
-		{
-			//Adjust the velocity
-			switch (e.key.keysym.sym)
-			{
-			case SDLK_w: mVelY += DOT_VEL; break;
-			case SDLK_s: mVelY -= DOT_VEL; break;
-			case SDLK_a: mVelX += DOT_VEL; break;
-			case SDLK_d: mVelX -= DOT_VEL; break;
-			}
+		case SDLK_w: mVelY -= DOT_VEL; break;
+		case SDLK_s: mVelY += DOT_VEL; break;
+		case SDLK_a: mVelX -= DOT_VEL; break;
+		case SDLK_d: mVelX += DOT_VEL; break;
 		}
 	}
-	else if (!isChaser)
+	//If a key was released
+	else if (e.type == SDL_KEYUP && e.key.repeat == 0)
 	{
-		//If a key was pressed
-		if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+		//Adjust the velocity
+		switch (e.key.keysym.sym)
 		{
-			//Adjust the velocity
-			switch (e.key.keysym.sym)
-			{
-			case SDLK_UP: mVelY -= DOT_VEL; break;
-			case SDLK_DOWN: mVelY += DOT_VEL; break;
-			case SDLK_LEFT: mVelX -= DOT_VEL; break;
-			case SDLK_RIGHT: mVelX += DOT_VEL; break;
-			}
-		}
-		//If a key was released
-		else if (e.type == SDL_KEYUP && e.key.repeat == 0)
-		{
-			//Adjust the velocity
-			switch (e.key.keysym.sym)
-			{
-			case SDLK_UP: mVelY += DOT_VEL; break;
-			case SDLK_DOWN: mVelY -= DOT_VEL; break;
-			case SDLK_LEFT: mVelX += DOT_VEL; break;
-			case SDLK_RIGHT: mVelX -= DOT_VEL; break;
-			}
+		case SDLK_w: mVelY += DOT_VEL; break;
+		case SDLK_s: mVelY -= DOT_VEL; break;
+		case SDLK_a: mVelX += DOT_VEL; break;
+		case SDLK_d: mVelX -= DOT_VEL; break;
 		}
 	}
 }

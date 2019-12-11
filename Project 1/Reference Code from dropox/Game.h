@@ -18,11 +18,15 @@ public:
 	bool IsRunning();
 	void CleanUp();
 private:
+	bool m_isSendCoords;
+
 	Client* m_client;
 	Dot* m_player;
 	Dot* m_otherPlayer;
 
-	Uint32 m_ticks;
+	Uint32 m_totalTicks;
+	Uint32 m_gameTicks;
+
 	bool m_running;
 	SDL_Window* m_p_Window;
 	SDL_Renderer* m_p_Renderer;

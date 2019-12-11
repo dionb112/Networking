@@ -32,7 +32,7 @@ bool Game::Initialize(const char* title, int xpos, int ypos, int width, int heig
 			if(m_p_Renderer != 0)
 			{
 				DEBUG_MSG("Renderer creation success");
-				SDL_SetRenderDrawColor(m_p_Renderer, 0, 255, 255, 255);
+				SDL_SetRenderDrawColor(m_p_Renderer, 255, 255, 255, 255);
 			}
 			else
 			{
@@ -65,13 +65,32 @@ void Game::Render()
 	SDL_RenderPresent(m_p_Renderer);
 }
 void Game::Update()
+
 {
 	int x = numFromString(m_client->getOtherPos()).at(0);
 	int y = numFromString(m_client->getOtherPos()).at(1);
 
-	m_ticks = SDL_GetTicks();
-	m_player->move(600, 800);
 	m_otherPlayer->SetPosition(x, y);
+	if (m_player->Checkcollision(m_otherPlayer->GetCenterX(), m_otherPlayer->GetCenterY()))
+	{
+		m_totalTicks =  SDL_GetTicks();
+		m_totalTicks -= m_gameTicks;
+		if (m_player->getChaser())
+		{
+			std::cout << "Dion wins, Aaron survival time: " + std::to_string(m_totalTicks / 60) + " seconds" << std::endl;
+			m_player->setChaser(false);
+			m_otherPlayer->setChaser(true);
+		}
+		else
+		{
+			std::cout << "Aaron wins, Dion survival time: " + std::to_string(m_totalTicks / 60) + " seconds" << std::endl;
+			m_player->setChaser(true);
+			m_otherPlayer->setChaser(false);
+		}
+		m_player->Init(m_p_Renderer);
+		m_otherPlayer->Init(m_p_Renderer);
+		m_gameTicks = SDL_GetTicks();
+	}
 }
 void Game::HandleEvents()
 {
@@ -84,7 +103,11 @@ void Game::HandleEvents()
 		{
 			m_running = false;
 		}
-		m_client->SendString(m_player->GetPosAsString());
+		else
+		{
+			m_player->move(600, 800);
+			m_client->SendString(m_player->GetPosAsString());
+		}
 	}
 }
 

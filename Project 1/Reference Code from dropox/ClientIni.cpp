@@ -7,7 +7,6 @@ Client::Client(const char * ip, const int port, Dot* t_player)
 {
 	m_otherPos = std::string("X: 0, Y: 0");
 
-
 	m_player = t_player;
 	//Winsock Startup
 	WSAData wsaData;

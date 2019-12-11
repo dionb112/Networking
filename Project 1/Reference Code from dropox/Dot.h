@@ -9,7 +9,7 @@ public:
 	static const int DOT_HEIGHT = 175;
 
 	//Maximum axis velocity of the dot
-	static const int DOT_VEL = 1;
+	static const int DOT_VEL = 10;
 
 	Dot() {};
 	//Initializes the variables
@@ -31,11 +31,12 @@ public:
 	bool Checkcollision(int centerX, int centerY);
 
 	bool GetLocal() { return isLocalplayer; };
-
+	bool getChaser() { return isChaser; }
 	int GetCenterX();
 	int GetCenterY();
 
 	void SetPosition(int x, int y);
+	void setChaser(bool t_swap) { isChaser = t_swap; }
 
 private:
 	bool isLocalplayer;
