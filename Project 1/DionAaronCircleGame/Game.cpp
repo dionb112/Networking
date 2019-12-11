@@ -77,13 +77,13 @@ void Game::Update()
 		m_totalTicks -= m_gameTicks;
 		if (m_player->getChaser())
 		{
-			std::cout << "Dion wins, Aaron survival time: " + std::to_string(m_totalTicks / 60) + " seconds" << std::endl;
+			std::cout << "Dion wins, Aaron survival time: " + std::to_string(m_totalTicks / 60 / 10) + " seconds" << std::endl;
 			m_player->setChaser(false);
 			m_otherPlayer->setChaser(true);
 		}
 		else
 		{
-			std::cout << "Aaron wins, Dion survival time: " + std::to_string(m_totalTicks / 60) + " seconds" << std::endl;
+			std::cout << "Aaron wins, Dion survival time: " + std::to_string(m_totalTicks / 60 / 10) + " seconds" << std::endl;
 			m_player->setChaser(true);
 			m_otherPlayer->setChaser(false);
 		}
